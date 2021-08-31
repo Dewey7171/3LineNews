@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 
 import feedparser
 
@@ -12,18 +13,6 @@ from fastapi import FastAPI
 
 
 app = FastAPI()
-
-rss_url = "http://feeds.feedburner.com/inven"
-
-# rss feed에는 총 25개의 뉴스 기사만 보여진다.
-rss_feed = feedparser.parse(rss_url)
-
-news_list = []
-news_data = {
-    "title":"",
-    "content":"",
-    "url":""
-}
 
 #-------------------- 한글 요약 클래스-------------------
 #리스트형식으로 저장하기 위한 클래스 선언
@@ -40,41 +29,166 @@ textrank: TextRank = TextRank(mytokenizer)
 # 요약한 데이터는 3줄까지 가능하도록 설정하는 변수
 k: int = 3
 
-def news_sm():
+class NewsName(str, Enum):
+    inven = "inven"
+    ruliweb = "ruliweb"
+    gameinsight = "gameinsight"
 
-    for feed in rss_feed.entries[:5]:
-        #  rss_feed 속 뉴스 링크 분류
+@app.get("/{news_name}")
+async def get_model(news_name: NewsName):
 
-        # article에 링크 속 뉴스 본문 가져와 저장한다.
-        article = Article(feed.link, language='ko')
-        article.download()
-        article.parse()
+    if news_name == NewsName.inven:
 
-        NewsTitle = article.title
-        NewsFeed = article.text
-        NewsUrl = article.url
+        rss_url = "http://feeds.feedburner.com/inven"
+        rss_feed = feedparser.parse(rss_url)
+        news_list = []
+        news_data = {
+            "title": "",
+            "content": "",
+            "url": ""
+        }
+
+        for feed in rss_feed.entries[:5]:
+            #  rss_feed 속 뉴스 링크 분류
+
+            # article에 링크 속 뉴스 본문 가져와 저장한다.
+            article = Article(feed.link, language='ko')
+            article.download()
+            article.parse()
+
+            NewsTitle = article.title
+            NewsFeed = article.text
+            NewsUrl = article.url
+
+            # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
+            summarized: str = textrank.summarize(NewsFeed, k)
+
+            news_data["title"] = NewsTitle
+            news_data["content"] = summarized
+            news_data["url"] = NewsUrl
+
+            news_content = news_data.copy()
+            news_list.append(news_content)
+        return json.dumps(news_list, ensure_ascii=False)
+
+    if news_name.value == "ruliweb":
+
+        rss_url = "https://bbs.ruliweb.com/news/rss"
+        rss_feed = feedparser.parse(rss_url)
+        news_list = []
+        news_data = {
+            "title": "",
+            "content": "",
+            "url": ""
+        }
+
+        for feed in rss_feed.entries[:5]:
+            #  rss_feed 속 뉴스 링크 분류
+
+            # article에 링크 속 뉴스 본문 가져와 저장한다.
+            article = Article(feed.link, language='ko')
+            article.download()
+            article.parse()
+
+            NewsTitle = article.title
+            NewsFeed = article.text
+            NewsUrl = article.url
+
+            # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
+            summarized: str = textrank.summarize(NewsFeed, k)
+
+            news_data["title"] = NewsTitle
+            news_data["content"] = summarized
+            news_data["url"] = NewsUrl
+
+            news_content = news_data.copy()
+            news_list.append(news_content)
+        return json.dumps(news_list, ensure_ascii=False)
+
+    if news_name.value == "gameinsight":
+
+        rss_url = "http://www.gameinsight.co.kr/rss/allArticle.xml"
+        rss_feed = feedparser.parse(rss_url)
+        news_list = []
+        news_data = {
+            "title": "",
+            "content": "",
+            "url": ""
+        }
+
+        for feed in rss_feed.entries[:5]:
+            #  rss_feed 속 뉴스 링크 분류
+
+            # article에 링크 속 뉴스 본문 가져와 저장한다.
+            article = Article(feed.link, language='ko')
+            article.download()
+            article.parse()
+
+            NewsTitle = article.title
+            NewsFeed = article.text
+            NewsUrl = article.url
+
+            # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
+            summarized: str = textrank.summarize(NewsFeed, k)
+
+            news_data["title"] = NewsTitle
+            news_data["content"] = summarized
+            news_data["url"] = NewsUrl
+
+            news_content = news_data.copy()
+            news_list.append(news_content)
+        return json.dumps(news_list, ensure_ascii=False)
+
+#
+# rss_url = "http://feeds.feedburner.com/inven"
+#
+# # rss feed에는 총 25개의 뉴스 기사만 보여진다.
+# rss_feed = feedparser.parse(rss_url)
+#
+# news_list = []
+# news_data = {
+#     "title":"",
+#     "content":"",
+#     "url":""
+# }
+#
+# def news_sm():
+#
+#     for feed in rss_feed.entries[:5]:
+#         #  rss_feed 속 뉴스 링크 분류
+#
+#         # article에 링크 속 뉴스 본문 가져와 저장한다.
+#         article = Article(feed.link, language='ko')
+#         article.download()
+#         article.parse()
+#
+#         NewsTitle = article.title
+#         NewsFeed = article.text
+#         NewsUrl = article.url
+#
+#
+#         # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
+#         summarized: str = textrank.summarize(NewsFeed, k)
+#
+#         news_data["title"] = NewsTitle
+#         news_data["content"] = summarized
+#         news_data["url"] = NewsUrl
+#
+#         news_content = news_data.copy()
+#         news_list.append(news_content)
+#     return json.dumps(news_list, ensure_ascii=False)
 
 
-        # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
-        summarized: str = textrank.summarize(NewsFeed, k)
 
-        news_data["title"] = NewsTitle
-        news_data["content"] = summarized
-        news_data["url"] = NewsUrl
-
-        news_content = news_data.copy()
-        news_list.append(news_content)
-    return json.dumps(news_list, ensure_ascii=False)
+# @app.get("/items/{item_id}")
+# async def read_item(item_id: int):
+#
+#     if item_id == str('inven'):
+#         return news_sm()
+#     else:
+#         return{"item_id":item_id}
 
 
-
-@app.get("/items/{item_id}")
-async def read_item(item_id: int):
-
-    if item_id == str('inven'):
-        return news_sm()
-    else:
-        return{"item_id":item_id}
 #----------------------------------------------------------
 
 

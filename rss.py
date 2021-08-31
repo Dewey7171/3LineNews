@@ -7,7 +7,7 @@ from textrankr import TextRank
 
 #게임 동아 "https://game.donga.com/feeds/rss"
 #인벤 "http://feeds.feedburner.com/inven"
-#게임 인사이트 "http://feeds.feedburner.com/inven"
+#게임 인사이트 "http://www.gameinsight.co.kr/rss/allArticle.xml"
 #루리웹 "https://bbs.ruliweb.com/news/rss"
 #더게임스데일리 "http://www.tgdaily.co.kr/rss/allArticle.xml"
 
