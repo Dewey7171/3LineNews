@@ -40,38 +40,7 @@ textrank: TextRank = TextRank(mytokenizer)
 # 요약한 데이터는 3줄까지 가능하도록 설정하는 변수
 k: int = 3
 
-
-class Contact(BaseModel):
-    contact_id:int
-    first_name:str
-    last_name:str
-    user_name:str
-    password:str
-
-class News(BaseModel):
-    NewsTitle : str
-    NewsFeed : str
-    NewsUrl : str
-
-class siteUrl(BaseModel):
-    siteUrl : str
-
-@app.post('/contact')
-async def create_contact(contact: Contact):
-    return contact
-
-@app.post('/news')
-async def news(news: News):
-    return news
-
-# @app.post('/siteUrl')
-# async def siteUrl():
-#     return
-
-
-
-@app.get("/123")
-def home():
+def news_sm():
 
     for feed in rss_feed.entries[:5]:
         #  rss_feed 속 뉴스 링크 분류
@@ -95,7 +64,6 @@ def home():
 
         news_content = news_data.copy()
         news_list.append(news_content)
-
     return json.dumps(news_list, ensure_ascii=False)
 
 
@@ -104,7 +72,7 @@ def home():
 async def read_item(item_id: int):
 
     if item_id == str('inven'):
-        return home()
+        return news_sm()
     else:
         return{"item_id":item_id}
 #----------------------------------------------------------
