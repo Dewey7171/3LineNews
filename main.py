@@ -1,25 +1,26 @@
-import logging
-
-
-
-from datetime import datetime, timedelta
-
+import pymysql
 import uvicorn
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from typing import Optional
-from passlib.context import CryptContext
-from jose import JWTError, jwt
+import sql_auth
 
-from pydantic import BaseModel
 from starlette.responses import JSONResponse
-
-from fastapi import FastAPI, Depends, HTTPException, status
-
+from fastapi import FastAPI, HTTPException
 from feed_parser import feed
 # to get a string like this run:
 # openssl rand -hex 32
 
 app = FastAPI()
+
+sql = sql_auth.app
+
+conn = pymysql.Connect(
+    db=sql['db'],
+    host=sql['host'],
+    user=sql['user'],
+    password=sql['password'],
+    charset=sql['charset'])
+
+s = conn.cursor()
+
 
 #-------------------------------------------------------------
 
