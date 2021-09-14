@@ -34,12 +34,14 @@ result = s.fetchall()
 #------------------Mysql 설정 부분------------------
 
 #------------------Class 선언 부분------------------
-
+class addNews(BaseModel):
+    name : Optional[str]
+    link : Optional[str]
 
 
 #------------------Class 선언 부분------------------
 
-
+qwe = []
 #-------------------Api 실행 부분-------------------
 
 @app.get("/news_list")
@@ -49,7 +51,17 @@ async def Newslist():
     newslist = s.fetchall()
     return newslist
 
+@app.post("/addnews")
+async def UpdateNews(addnews : addNews):
+    updates =" INSERT INTO news_link VALUES(%s,%s,%s)"
+    a = dict(addnews)
+    qwe.append(5)
+    qwe.append(a['name'])
+    qwe.append(a['link'])
 
+    s.execute(updates,qwe)
+    conn.commit()
+    return a
 
 @app.get("/{news_name}")
 async def News(news_name: str):
