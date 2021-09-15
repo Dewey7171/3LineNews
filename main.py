@@ -41,8 +41,10 @@ class addNews(BaseModel):
 
 #------------------Class 선언 부분------------------
 
-qwe = []
+new_News = []
 #-------------------Api 실행 부분-------------------
+
+
 
 @app.get("/news_list")
 async def Newslist():
@@ -53,19 +55,20 @@ async def Newslist():
 
 @app.post("/addnews")
 async def UpdateNews(addnews : addNews):
-    updates =" INSERT INTO news_link VALUES(%s,%s,%s)"
-    a = dict(addnews)
-    qwe.append(5)
-    qwe.append(a['name'])
-    qwe.append(a['link'])
 
-    s.execute(updates,qwe)
+    updates =" INSERT INTO news_link VALUES(%s,%s,%s)"
+    add_new_Data = dict(addnews)
+
+    new_News.append(len(result)+1)
+    new_News.append(add_new_Data['name'])
+    new_News.append(add_new_Data['link'])
+
+    s.execute(updates,new_News)
     conn.commit()
-    return a
+    return HTTPException(status_code=200, detail="SUCCESS INSERT DATA")
 
 @app.get("/{news_name}")
 async def News(news_name: str):
-
     for i in result:
 
         a = i['name']
@@ -79,7 +82,6 @@ async def News(news_name: str):
 
             else:
                 raise HTTPException(status_code=404, detail="Notfound Link Please recheck URL")
-
     News = feed(rss_url)
     return JSONResponse(News)
 #-------------------Api 실행 부분-------------------
