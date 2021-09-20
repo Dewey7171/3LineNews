@@ -28,7 +28,7 @@ def feed(rss_url : str) :
         "url": ""
     }
 
-    for feed in rss_feed.entries[:2]:
+    for feed in rss_feed.entries[:3]:
         #  rss_feed 속 뉴스 링크 분류
 
         # article에 링크 속 뉴스 본문 가져와 저장한다.
