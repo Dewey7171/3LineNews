@@ -47,9 +47,11 @@ class dbconn:
 connect_cursor = dbconn('developer')
 develop_cursor = connect_cursor.conn_cursor()
 
-search = "SELECT * FROM news_link"
-develop_cursor.execute(search)
-result = develop_cursor.fetchall()
+news_link_search = "SELECT * FROM news_link"
+develop_cursor.execute(news_link_search)
+news_link_result = develop_cursor.fetchall()
+
+
 
 #------------------Mysql 설정 부분------------------
 
@@ -84,11 +86,13 @@ async def UpdateNews(addnews : addNews):
     updates =" INSERT INTO news_link VALUES(%s,%s,%s)"
     add_new_Data = dict(addnews)
 
-    new_News.append(len(result)+1)
+    new_News.append(len(news_link_result)+1)
     new_News.append(add_new_Data['name'])
     new_News.append(add_new_Data['link'])
 
     develop_cursor.execute(updates,new_News)
+    connect_cursor.conn_commit()
+    connect_cursor.conn_close()
 
 
     return HTTPException(status_code=200, detail="SUCCESS INSERT DATA")
@@ -96,7 +100,7 @@ async def UpdateNews(addnews : addNews):
 @app.get("/{news_name}")
 async def News(news_name: str):
 
-    for i in result:
+    for i in news_link_result:
         newsNameData = i['name']
         if news_name.lower() == newsNameData:
             b = iter(i)
@@ -108,7 +112,28 @@ async def News(news_name: str):
                 raise HTTPException(status_code=404, detail="Notfound Link Please recheck URL")
 
     News = feed(rss_url)
-    return JSONResponse(News)
+
+
+    newdata_search = "SELECT * FROM newdata"
+    develop_cursor.execute(newdata_search)
+    newdata_result = develop_cursor.fetchall()
+
+
+
+    for data in range(0,len(News)):
+        datasaver = []
+        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default)"
+        # datasaver.append(len(newdata_result) + 1)
+        datasaver.append(News[data]['title'])
+        datasaver.append(News[data]['content'])
+        datasaver.append(News[data]['url'])
+        datasaver.append(news_name)
+
+        develop_cursor.execute(dataUpdates, datasaver)
+
+    connect_cursor.conn_commit()
+    connect_cursor.conn_close()
+    return datasaver
 #-------------------Api 실행 부분-------------------
 
 if __name__ == '__main__':
