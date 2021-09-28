@@ -1,20 +1,17 @@
 from typing import Optional
-
-import pymysql
-import uvicorn
 from pydantic import BaseModel
-
-import sql_auth
-
-from starlette.responses import JSONResponse
 from fastapi import FastAPI, HTTPException
 from feed_parser import feed
 
+import pymysql
+import uvicorn
+import sql_auth
+
 app = FastAPI()
+
 
 #------------------Mysql 설정 부분------------------
 sql = sql_auth.app
-
 
 class dbconn:
 
@@ -41,9 +38,6 @@ class dbconn:
         close = self.connect.close()
         return close
 
-
-
-
 connect_cursor = dbconn('developer')
 develop_cursor = connect_cursor.conn_cursor()
 
@@ -51,9 +45,8 @@ news_link_search = "SELECT * FROM news_link"
 develop_cursor.execute(news_link_search)
 news_link_result = develop_cursor.fetchall()
 
-
-
 #------------------Mysql 설정 부분------------------
+
 
 #------------------Class 선언 부분------------------
 class addNews(BaseModel):
@@ -83,17 +76,15 @@ async def UpdateNews(addnews : addNews):
     # 근데 여기에 rss 링크가 아닌 일반 링크가 들어오면 망치는데 어떡하지?
     # 이 작업은 어디서 해야될까? feed_parser에서 진행해야 될 것으로 보이긴함
 
-    updates =" INSERT INTO news_link VALUES(%s,%s,%s)"
+    updates =" INSERT INTO news_link VALUES(default,%s,%s)"
     add_new_Data = dict(addnews)
 
-    new_News.append(len(news_link_result)+1)
     new_News.append(add_new_Data['name'])
     new_News.append(add_new_Data['link'])
 
     develop_cursor.execute(updates,new_News)
     connect_cursor.conn_commit()
     connect_cursor.conn_close()
-
 
     return HTTPException(status_code=200, detail="SUCCESS INSERT DATA")
 
@@ -116,24 +107,20 @@ async def News(news_name: str):
 
     newdata_search = "SELECT * FROM newdata"
     develop_cursor.execute(newdata_search)
-    newdata_result = develop_cursor.fetchall()
-
-
 
     for data in range(0,len(News)):
         datasaver = []
         dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default)"
-        # datasaver.append(len(newdata_result) + 1)
         datasaver.append(News[data]['title'])
         datasaver.append(News[data]['content'])
         datasaver.append(News[data]['url'])
         datasaver.append(news_name)
-
         develop_cursor.execute(dataUpdates, datasaver)
 
     connect_cursor.conn_commit()
     connect_cursor.conn_close()
     return datasaver
+
 #-------------------Api 실행 부분-------------------
 
 if __name__ == '__main__':
