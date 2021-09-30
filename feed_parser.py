@@ -25,10 +25,11 @@ def feed(rss_url : str) :
     news_data = {
         "title": "",
         "content": "",
-        "url": ""
+        "url": "",
+        "date":""
     }
 
-    for feed in rss_feed.entries[:3]:
+    for feed in rss_feed.entries:
         #  rss_feed 속 뉴스 링크 분류
 
         # article에 링크 속 뉴스 본문 가져와 저장한다.
@@ -39,6 +40,7 @@ def feed(rss_url : str) :
         NewsTitle = article.title
         NewsFeed = article.text
         NewsUrl = article.url
+        NewsDate = article.publish_date
 
         # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
         summarized: str = textrank.summarize(NewsFeed, k)
@@ -46,6 +48,7 @@ def feed(rss_url : str) :
         news_data["title"] = NewsTitle
         news_data["content"] = summarized
         news_data["url"] = NewsUrl
+        news_data["date"] = NewsDate
 
         news_content = news_data.copy()
         news_list.append(news_content)

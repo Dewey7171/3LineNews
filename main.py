@@ -110,11 +110,12 @@ async def News(news_name: str):
 
     for data in range(0,len(News)):
         datasaver = []
-        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default)"
+        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default,%s)"
         datasaver.append(News[data]['title'])
         datasaver.append(News[data]['content'])
         datasaver.append(News[data]['url'])
         datasaver.append(news_name)
+        datasaver.append(News[data]['date'])
         develop_cursor.execute(dataUpdates, datasaver)
 
     connect_cursor.conn_commit()
