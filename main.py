@@ -58,8 +58,8 @@ class addNews(BaseModel):
 #-------------------Api 실행 부분-------------------
 @app.get("/news_list")
 async def Newslist():
-    newslist_db = "SELECT name,link FROM news_link "
-    develop_cursor.execute(newslist_db)
+
+    develop_cursor.execute(news_link_search)
     newslist = develop_cursor.fetchall()
 
     connect_cursor.conn_commit()
