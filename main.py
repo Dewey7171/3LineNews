@@ -45,6 +45,14 @@ news_link_search = "SELECT * FROM news_link"
 develop_cursor.execute(news_link_search)
 news_link_result = develop_cursor.fetchall()
 
+
+# 테스트 코드임
+# newdata = "SELECT * FROM newdata"
+# develop_cursor.execute(newdata)
+# asdas = develop_cursor.fetchall()
+# qwe = str(asdas)
+# print(qwe)
+
 #------------------Mysql 설정 부분------------------
 
 
@@ -111,16 +119,39 @@ async def News(news_name: str):
     for data in range(0,len(News)):
         datasaver = []
         dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default,%s)"
-        datasaver.append(News[data]['title'])
-        datasaver.append(News[data]['content'])
-        datasaver.append(News[data]['url'])
+        NewsData = News[data]
+
+        if NewsData['title'] is None:
+            raise HTTPException(status_code=412, detail="This Site Have not Title, Please Use Another Link")
+        elif NewsData['title'] is not None:
+            datasaver.append(NewsData['title'])
+        elif NewsData['content'] is None:
+            raise HTTPException(status_code=412, detail="This Site Have not Content, Please Use Another Link")
+        elif NewsData['content'] is not None:
+            datasaver.append(NewsData['content'])
+        elif NewsData['url'] is None:
+            raise HTTPException(status_code=412, detail="This Site Have not Content, Please Use Another Link")
+        elif NewsData['url'] is not None:
+            datasaver.append(NewsData['url'])
+
         datasaver.append(news_name)
-        datasaver.append(News[data]['date'])
+
+        if NewsData['date'] is None:
+            raise HTTPException(status_code=412, detail="This Site Have not PublishDate, Please Use Another Link")
+
+        elif NewsData['date'] is not None:
+            datasaver.append(NewsData['date'])
+
         develop_cursor.execute(dataUpdates, datasaver)
 
     connect_cursor.conn_commit()
     connect_cursor.conn_close()
     return datasaver
+
+@app.get("/{date}")
+async def newsDate(date:int):
+
+    return date
 
 #-------------------Api 실행 부분-------------------
 
