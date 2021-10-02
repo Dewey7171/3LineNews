@@ -1,3 +1,5 @@
+from http.client import HTTPException
+
 import feedparser
 from newspaper import Article
 from textrankr import TextRank
@@ -29,7 +31,7 @@ def feed(rss_url : str) :
         "date":""
     }
 
-    for feed in rss_feed.entries:
+    for feed in rss_feed.entries[:3]:
         #  rss_feed 속 뉴스 링크 분류
 
         # article에 링크 속 뉴스 본문 가져와 저장한다.
