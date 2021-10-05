@@ -96,7 +96,7 @@ async def UpdateNews(addnews : addNews):
 
     return HTTPException(status_code=200, detail="SUCCESS INSERT DATA")
 
-@app.get("/{news_name}")
+@app.get("/news/{news_name}")
 async def News(news_name: str):
 
     for i in news_link_result:
@@ -148,10 +148,11 @@ async def News(news_name: str):
     connect_cursor.conn_close()
     return datasaver
 
-@app.get("/{date}")
-async def newsDate(date:int):
+@app.get("/")
+async def main():
+    main = "fastapi 메인"
+    return main
 
-    return date
 
 #-------------------Api 실행 부분-------------------
 
