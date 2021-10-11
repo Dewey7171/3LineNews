@@ -100,12 +100,12 @@ async def UpdateNews(addnews : addNews):
 @app.get("/news/{news_name}")
 async def News(news_name: str):
 
+    # 뉴스 리스트 속에 있는 뉴스들을 찾아서 rss_url로 저장하는 구문
     for i in news_link_result:
         newsNameData = i['name']
         if news_name.lower() == newsNameData:
             b = iter(i)
             c = next(b)
-
             if c.find(newsNameData):
                 rss_url = i['link']
             else:
@@ -120,7 +120,7 @@ async def News(news_name: str):
     # 현재 이 반복문은 News 리스트 속 존재하는 딕셔너리를 추출하는 구문
     # 추출한 딕셔너리를 datasaver라는 리스트에 하나씩 집어넣어 DB 컬럼에 맞게 집어 넣는다.
     # 현재 DB의 모든 Column은 NOT NULL이 적용되어 있는데 만약 NULL값이 들어오면 오류가 발생함
-    # 이러한 NULL값에 대한 방지로
+    # 이러한 NULL값에 대한 방지로 Not null 해제 해놓고 이에 대한 추가 수정 필요
     for data in range(0,len(News)):
         datasaver = []
         dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default,%s)"
@@ -133,6 +133,7 @@ async def News(news_name: str):
         datasaver.append(NewsData['date'])
 
         develop_cursor.execute(dataUpdates, datasaver)
+
 
     connect_cursor.conn_commit()
     connect_cursor.conn_close()
