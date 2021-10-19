@@ -83,10 +83,6 @@ for i in news_link_result:
         except:
             print('URL Duplicate Reload Data')
             pass
-        else:
-            print('오류 없다')
-        finally:
-            print('dd')
 
 connect_cursor.conn_commit()
 connect_cursor.conn_close()
@@ -173,14 +169,14 @@ connect_cursor.conn_close()
 #     connect_cursor.conn_close()
 #     return datasaver
 
-# @app.get("/")
-# async def main():
-#     main = "fastapi 메인"
-#     return main
+@app.get("/")
+async def main():
+    main = "fastapi 메인"
+    return main
 #
 #
 # #-------------------Api 실행 부분-------------------
 #
-# if __name__ == '__main__':
-#     uvicorn.run(app)
+if __name__ == '__main__':
+    uvicorn.run(app)
 
