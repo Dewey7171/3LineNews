@@ -83,6 +83,7 @@ async def UpdateNews(addnews : addNews):
 
     return HTTPException(status_code=200, detail="SUCCESS INSERT DATA")
 
+# 뉴스 이름별로
 @app.get("/news/{newsname}")
 async def News(newsname: str):
 
@@ -92,10 +93,20 @@ async def News(newsname: str):
 
     return SelectNews
 
+# 뉴스 날짜별로
+@app.get("/news/{newsname}/{date}")
+async def News(date: str):
+
+    findDATE = f"SELECT * FROM newdata WHERE DATE(recordtime) =" +f'\'{date}\''
+    develop_cursor.execute(findDATE)
+
+    SelectNews = develop_cursor.fetchall()
+    return SelectNews
+
 
 @app.get("/")
 async def main():
-    main = "fastapi 메인"
+    main = "fastapi 메인페이지 입니다."
     return main
 
 
