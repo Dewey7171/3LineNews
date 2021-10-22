@@ -65,7 +65,7 @@ for i in news_link_result:
         # develop_cursor.execute(news_url)
         # check_url = develop_cursor.fetchall()
 
-        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,default,%s)"
+        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
         NewsData = News[data]
         datasaver = []
         datasaver.append(NewsData['title'])
