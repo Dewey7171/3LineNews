@@ -42,8 +42,6 @@ class dbconn:
 connect_cursor = dbconn('developer')
 develop_cursor = connect_cursor.conn_cursor()
 
-# news
-news_link_search = "SELECT * FROM news_link"
 
 #------------------Class 선언 부분------------------
 
@@ -53,6 +51,7 @@ news_link_search = "SELECT * FROM news_link"
 # 뉴스 리스트 호출
 @app.get("/newslist")
 async def Newslist():
+    news_link_search = "SELECT * FROM news_link"
 
     develop_cursor.execute(news_link_search)
     newslist = develop_cursor.fetchall()
@@ -99,10 +98,11 @@ async def News(date: str):
 
     findDATE = f"SELECT * FROM newdata WHERE DATE(recordtime) =" +f'\'{date}\''
     develop_cursor.execute(findDATE)
-
     SelectNews = develop_cursor.fetchall()
+
     return SelectNews
 
+#주소입력을 잘 못했으면? 어떻게 표현 할건가?
 
 @app.get("/")
 async def main():
