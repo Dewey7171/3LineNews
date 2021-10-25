@@ -65,7 +65,7 @@ for i in news_link_result:
         # develop_cursor.execute(news_url)
         # check_url = develop_cursor.fetchall()
 
-        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
+        dataUpdates = "INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
         NewsData = News[data]
         datasaver = []
         datasaver.append(NewsData['title'])
@@ -77,6 +77,8 @@ for i in news_link_result:
             develop_cursor.execute(dataUpdates, datasaver)
         except:
             print('URL Duplicate Reload Data')
+            idSort = "update newdata set id = @count:=@count+1;"
+            develop_cursor.execute(idSort)
             pass
 
 connect_cursor.conn_commit()
