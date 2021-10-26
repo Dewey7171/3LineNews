@@ -35,7 +35,7 @@ class dbconn:
         close = self.connect.close()
         return close
 
-connect_cursor = dbconn('News')
+connect_cursor = dbconn('')
 develop_cursor = connect_cursor.conn_cursor()
 
 # news
