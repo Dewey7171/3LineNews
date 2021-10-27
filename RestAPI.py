@@ -23,7 +23,8 @@ class dbconn:
             host=sql['host'],
             user=sql['user'],
             password=sql['password'],
-            charset=sql['charset'])
+            charset=sql['charset'],
+            port=55222)
 
     # DB를 연결해 이용하기 위한 커서 연결 함수
     def conn_cursor (self):
@@ -39,7 +40,7 @@ class dbconn:
         close = self.connect.close()
         return close
 
-connect_cursor = dbconn('developer')
+connect_cursor = dbconn('News')
 develop_cursor = connect_cursor.conn_cursor()
 
 
@@ -93,13 +94,13 @@ async def News(newsname: str):
     return SelectNews
 
 # 뉴스 날짜별로
-@app.get("/news/{newsname}/{date}")
+@app.get("/date/{date}")
 async def News(date: str):
 
     findDATE = f"SELECT * FROM newdata WHERE DATE(recordtime) =" +f'\'{date}\''
     develop_cursor.execute(findDATE)
-    SelectNews = develop_cursor.fetchall()
 
+    SelectNews = develop_cursor.fetchall()
     return SelectNews
 
 #주소입력을 잘 못했으면? 어떻게 표현 할건가?

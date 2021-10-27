@@ -17,7 +17,9 @@ class dbconn:
             host=sql['host'],
             user=sql['user'],
             password=sql['password'],
-            charset=sql['charset'])
+            charset=sql['charset']
+            # port=55222
+            )
 
     # DB를 연결해 이용하기 위한 커서 연결 함수
     def conn_cursor (self):
@@ -33,7 +35,7 @@ class dbconn:
         close = self.connect.close()
         return close
 
-connect_cursor = dbconn('News')
+connect_cursor = dbconn('developer')
 develop_cursor = connect_cursor.conn_cursor()
 
 # news
@@ -65,7 +67,7 @@ for i in news_link_result:
         # develop_cursor.execute(news_url)
         # check_url = develop_cursor.fetchall()
 
-        dataUpdates = "INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
+        dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
         NewsData = News[data]
         datasaver = []
         datasaver.append(NewsData['title'])
@@ -77,12 +79,14 @@ for i in news_link_result:
             develop_cursor.execute(dataUpdates, datasaver)
         except:
             print('URL Duplicate Reload Data')
+            pass
+        finally:
+            Sortid = "set @count = 0"
+            develop_cursor.execute(Sortid)
+            connect_cursor.conn_commit()
             idSort = "update newdata set id = @count:=@count+1;"
             develop_cursor.execute(idSort)
-            pass
+            connect_cursor.conn_commit()
 
 connect_cursor.conn_commit()
 connect_cursor.conn_close()
-
-
-
