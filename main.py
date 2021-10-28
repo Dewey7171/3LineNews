@@ -38,7 +38,6 @@ class dbconn:
 connect_cursor = dbconn('News')
 develop_cursor = connect_cursor.conn_cursor()
 
-# news
 news_link_search = "SELECT * FROM news_link"
 develop_cursor.execute(news_link_search)
 news_link_result = develop_cursor.fetchall()
