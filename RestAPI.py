@@ -66,11 +66,7 @@ async def Newslist():
 # db에 새로운 링크 집어 넣는 곳
 @app.post("/addnews")
 async def UpdateNews(addnews : addNews):
-
     new_News = []
-    # 근데 여기에 rss 링크가 아닌 일반 링크가 들어오면 망치는데 어떡하지?
-    # 이 작업은 어디서 해야될까? feed_parser에서 진행해야 될 것으로 보이긴함
-
     updates =" INSERT INTO news_link VALUES(default,%s,%s)"
     add_new_Data = dict(addnews)
 
@@ -102,8 +98,6 @@ async def News(date: str):
 
     SelectNews = develop_cursor.fetchall()
     return SelectNews
-
-#주소입력을 잘 못했으면? 어떻게 표현 할건가?
 
 @app.get("/")
 async def main():
