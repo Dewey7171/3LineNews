@@ -3,40 +3,13 @@ from feed_parser import feed
 
 import pymysql
 import sql_auth
-
+import db
 app = FastAPI()
 sql = sql_auth.app
 
 #------------------Mysql 설정 부분------------------
-class dbconn:
 
-    # dbconn을 호출하면 맨 처음 나오는 DB연결 기본 함수
-    def __init__(self,dbname:str):
-        self.connect = pymysql.Connect(
-            db=dbname,
-            host=sql['host'],
-            user=sql['user'],
-            password=sql['password'],
-            charset=sql['charset'],
-            port=55222
-            )
-
-    # DB를 연결해 이용하기 위한 커서 연결 함수
-    def conn_cursor (self):
-        self.connect.ping(reconnect=True)
-        cur = self.connect.cursor(pymysql.cursors.DictCursor)
-        return cur
-
-    # DB를 커밋하는 함수
-    def conn_commit(self):
-        commit = self.connect.commit()
-        return commit
-    # DB를 닫는 함수
-    def conn_close(self):
-        close = self.connect.close()
-        return close
-
-connect_cursor = dbconn('News')
+connect_cursor = db.dbconn('News')
 develop_cursor = connect_cursor.conn_cursor()
 
 # news
@@ -46,10 +19,6 @@ news_link_result = develop_cursor.fetchall()
 
 links_list = []
 
-# a = "ALTER TABLE newdata AUTO_INCREMENT=1"
-# develop_cursor.execute(a)
-# connect_cursor.conn_commit()
-# connect_cursor.conn_close()
 #------------------Mysql 설정 부분------------------
 
 
