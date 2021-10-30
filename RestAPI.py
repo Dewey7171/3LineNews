@@ -40,30 +40,30 @@ class dbconn:
     def conn_close(self):
         close = self.connect.close()
         return close
-
-connect_cursor = dbconn('News')
-develop_cursor = connect_cursor.conn_cursor()
-
-
-
 #------------------Class 선언 부분------------------
-
 
 #-------------------Api 실행 부분-------------------
 
 # 뉴스 리스트 호출
 @app.get("/newslist")
 async def Newslist():
+    connect_cursor = dbconn('News')
+    develop_cursor = connect_cursor.conn_cursor()
 
     news_link_search = "SELECT * FROM news_link"
     develop_cursor.execute(news_link_search)
     newslist = develop_cursor.fetchall()
+
+    connect_cursor.conn_commit()
+    connect_cursor.conn_close()
     return newslist
 
 
 # db에 새로운 링크 집어 넣는 곳
 @app.post("/addnews")
 async def UpdateNews(addnews : addNews):
+    connect_cursor = dbconn('News')
+    develop_cursor = connect_cursor.conn_cursor()
 
     new_News = []
     # 근데 여기에 rss 링크가 아닌 일반 링크가 들어오면 망치는데 어떡하지?
@@ -74,28 +74,38 @@ async def UpdateNews(addnews : addNews):
 
     new_News.append(add_new_Data['name'])
     new_News.append(add_new_Data['link'])
-
     develop_cursor.execute(updates,new_News)
+
     connect_cursor.conn_commit()
+    connect_cursor.conn_close()
 
     return HTTPException(status_code=200, detail="SUCCESS INSERT DATA")
 
 # 뉴스 이름별로
 @app.get("/news/{newsname}")
 async def News(newsname: str):
+    connect_cursor = dbconn('News')
+    develop_cursor = connect_cursor.conn_cursor()
 
     findDB = "SELECT * FROM newdata WHERE newsname ="+f'\'{newsname}\''
     develop_cursor.execute(findDB)
     SelectNews = develop_cursor.fetchall()
+
+    connect_cursor.conn_commit()
+    connect_cursor.conn_close()
     return SelectNews
 
 # 뉴스 날짜별로
 @app.get("/news/{newsname}/{date}")
 async def News(date: str):
+    connect_cursor = dbconn('News')
+    develop_cursor = connect_cursor.conn_cursor()
 
     findDATE = f"SELECT * FROM newdata WHERE DATE(recordtime) =" +f'\'{date}\''
     develop_cursor.execute(findDATE)
     SelectNews = develop_cursor.fetchall()
+    connect_cursor.conn_commit()
+    connect_cursor.conn_close()
 
     return SelectNews
 
