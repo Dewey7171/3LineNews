@@ -7,6 +7,7 @@ import sql_auth
 
 app = FastAPI()
 sql = sql_auth.app
+import db
 
 
 #------------------Class 선언 부분------------------
@@ -14,32 +15,7 @@ class addNews(BaseModel):
     name : Optional[str]
     link : Optional[str]
 
-class dbconn:
 
-    # dbconn을 호출하면 맨 처음 나오는 DB연결 기본 함수
-    def __init__(self,dbname:str):
-        self.connect = pymysql.Connect(
-            db=dbname,
-            host=sql['host'],
-            user=sql['user'],
-            password=sql['password'],
-            charset=sql['charset'],
-            port = 55222)
-
-    # DB를 연결해 이용하기 위한 커서 연결 함수
-    def conn_cursor (self):
-        self.connect.ping(reconnect=True)
-        cur = self.connect.cursor(pymysql.cursors.DictCursor)
-        return cur
-
-    # DB를 커밋하는 함수
-    def conn_commit(self):
-        commit = self.connect.commit()
-        return commit
-    # DB를 닫는 함수
-    def conn_close(self):
-        close = self.connect.close()
-        return close
 #------------------Class 선언 부분------------------
 
 #-------------------Api 실행 부분-------------------
@@ -47,7 +23,7 @@ class dbconn:
 # 뉴스 리스트 호출
 @app.get("/newslist")
 async def Newslist():
-    connect_cursor = dbconn('News')
+    connect_cursor = db.dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     news_link_search = "SELECT * FROM news_link"
@@ -58,11 +34,10 @@ async def Newslist():
     connect_cursor.conn_close()
     return newslist
 
-
 # db에 새로운 링크 집어 넣는 곳
 @app.post("/addnews")
 async def UpdateNews(addnews : addNews):
-    connect_cursor = dbconn('News')
+    connect_cursor = db.dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     new_News = []
@@ -84,7 +59,7 @@ async def UpdateNews(addnews : addNews):
 # 뉴스 이름별로
 @app.get("/news/{newsname}")
 async def News(newsname: str):
-    connect_cursor = dbconn('News')
+    connect_cursor = db.dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     findDB = "SELECT * FROM newdata WHERE newsname ="+f'\'{newsname}\''
@@ -98,7 +73,7 @@ async def News(newsname: str):
 # 뉴스 날짜별로
 @app.get("/news/{newsname}/{date}")
 async def News(date: str):
-    connect_cursor = dbconn('News')
+    connect_cursor = db.dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     findDATE = f"SELECT * FROM newdata WHERE DATE(recordtime) =" +f'\'{date}\''
@@ -115,7 +90,6 @@ async def News(date: str):
 async def main():
     main = "fastapi 메인페이지 입니다."
     return main
-
 
 #-------------------Api 실행 부분-------------------
 if __name__ == '__main__':
