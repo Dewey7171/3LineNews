@@ -32,6 +32,8 @@ def feed(rss_url : str) :
     }
 
     for feed in rss_feed.entries:
+        #  rss_feed 속 뉴스 링크 분류
+
         # article에 링크 속 뉴스 본문 가져와 저장한다.
         article = Article(feed.link, language='ko')
         article.download()
