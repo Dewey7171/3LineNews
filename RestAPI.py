@@ -2,20 +2,18 @@ from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 import uvicorn
-import pymysql
-import sql_auth
-
-app = FastAPI()
-sql = sql_auth.app
 import db
 
+app = FastAPI()
+dbconn = db.dbconn
+
+connect_cursor = dbconn('News')
+develop_cursor = connect_cursor.conn_cursor()
 
 #------------------Class 선언 부분------------------
 class addNews(BaseModel):
     name : Optional[str]
     link : Optional[str]
-
-
 #------------------Class 선언 부분------------------
 
 #-------------------Api 실행 부분-------------------
@@ -23,7 +21,7 @@ class addNews(BaseModel):
 # 뉴스 리스트 호출
 @app.get("/newslist")
 async def Newslist():
-    connect_cursor = db.dbconn('News')
+    connect_cursor = dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     news_link_search = "SELECT * FROM news_link"
@@ -37,12 +35,11 @@ async def Newslist():
 # db에 새로운 링크 집어 넣는 곳
 @app.post("/addnews")
 async def UpdateNews(addnews : addNews):
-    connect_cursor = db.dbconn('News')
+
+    connect_cursor = dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     new_News = []
-    # 근데 여기에 rss 링크가 아닌 일반 링크가 들어오면 망치는데 어떡하지?
-    # 이 작업은 어디서 해야될까? feed_parser에서 진행해야 될 것으로 보이긴함
 
     updates =" INSERT INTO news_link VALUES(default,%s,%s)"
     add_new_Data = dict(addnews)
@@ -59,7 +56,7 @@ async def UpdateNews(addnews : addNews):
 # 뉴스 이름별로
 @app.get("/news/{newsname}")
 async def News(newsname: str):
-    connect_cursor = db.dbconn('News')
+    connect_cursor = dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     findDB = "SELECT * FROM newdata WHERE newsname ="+f'\'{newsname}\''
@@ -73,12 +70,13 @@ async def News(newsname: str):
 # 뉴스 날짜별로
 @app.get("/news/{newsname}/{date}")
 async def News(date: str):
-    connect_cursor = db.dbconn('News')
+    connect_cursor = dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
     findDATE = f"SELECT * FROM newdata WHERE DATE(recordtime) =" +f'\'{date}\''
     develop_cursor.execute(findDATE)
     SelectNews = develop_cursor.fetchall()
+
     connect_cursor.conn_commit()
     connect_cursor.conn_close()
 
