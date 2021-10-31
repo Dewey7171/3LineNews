@@ -1,11 +1,7 @@
-from http.client import HTTPException
-
 import feedparser
 from newspaper import Article
 from textrankr import TextRank
 from typing import List
-
-
 
 #리스트형식으로 저장하기 위한 클래스 선언
 class MyTokenizer:
