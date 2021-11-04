@@ -1,5 +1,7 @@
 import pymysql
 import sql_auth
+from sqlalchemy import *
+import sqlalchemy as db
 
 sql = sql_auth.app
 
@@ -30,3 +32,20 @@ class dbconn:
     def conn_close(self):
         close = self.connect.close()
         return close
+
+
+engine = create_engine(sql['name'] + '://' + sql['user']+ ':'+sql['password']+'@'+sql['host']+'/'+sql['db'])
+
+conn = engine.connect()
+metadata = db.MetaData()
+table = db.Table('newdata',metadata,autoload=True, autoload_with = engine)
+
+print(table.columns.keys())
+query = db.select([table])
+
+result = conn.execute(query)
+result_set = result.fetchall()
+row = result.fetchone()
+print(row._mapping['title'])
+
+
