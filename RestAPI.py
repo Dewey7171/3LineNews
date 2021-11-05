@@ -69,7 +69,7 @@ async def News(newsname: str):
 
 # 뉴스 날짜별로
 @app.get("/news/{newsname}/{date}")
-async def News(date: str):
+async def NewsDate(date: str):
     connect_cursor = dbconn('News')
     develop_cursor = connect_cursor.conn_cursor()
 
