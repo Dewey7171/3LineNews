@@ -2,8 +2,8 @@ from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI
 import uvicorn
-# import db
-from sqlalchemy import *
+
+from sqlalchemy import create_engine
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 import sql_auth
