@@ -1,17 +1,28 @@
 
-Env = 'alche'
+# 라이브 서버에서는 alche가 아닌 local로 변경함
 
-if Env == 'local':
+Env = 'live'
+
+if Env == 'live':
 
     app ={
+        'name' : 'mysql+pymysql',
+        'user' : 'root',
+        'password': '1234',
+        'host': '0.0.0.0',
+        'db': 'News',
+        'port': '55222'
+    }
+
+elif Env == 'testpy':
+    app = {
         'user' : 'root',
         'password' : '1234',
         'host' : '0.0.0.0',
         'charset' : 'utf8',
         'port' : 55222
     }
-
-elif Env == 'alche':
+elif Env == 'testsqlal':
     app = {
         'name' : 'mysql+pymysql',
         'user' : 'root',
