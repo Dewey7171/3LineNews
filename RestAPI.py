@@ -12,8 +12,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 sql = sql_auth.app
 
-engine = create_engine(
-    sql['name'] + '://' + sql['user']+ ':'+sql['password']+'@'+sql['host']+'/'+sql['db'])
+engine = create_engine(sql['name'] + '://' + sql['user']+ ':'+sql['password']+'@'+sql['host']+':'+sql['port']+'/'+sql['db'])
 
 conn = engine.connect()
 metadata = db.MetaData()
@@ -49,6 +48,11 @@ async def news_list():
     table1 = db.Table('news_link', metadata, autoload=True, autoload_with=engine)
     newslist = session.query(table1).all()
     return newslist
+@app.get("/")
+async def main():
+    main = "fastapi 메인페이지 입니다."
+    return main
+
 
 
 # 뉴스 리스트 호출
@@ -116,7 +120,7 @@ async def news_list():
 #     return SelectNews
 #
 # #주소입력을 잘 못했으면? 어떻게 표현 할건가?
-# 
+#
 # @app.get("/")
 # async def main():
 #     main = "fastapi 메인페이지 입니다."
