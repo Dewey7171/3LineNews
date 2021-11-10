@@ -2,30 +2,19 @@ from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI
 import uvicorn
-
-from sqlalchemy import create_engine
+import dbconn
 import sqlalchemy as db
-from sqlalchemy.orm import sessionmaker
 import sql_auth
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
 sql = sql_auth.app
 
-engine = create_engine(sql['name'] + '://' + sql['user']+ ':'+sql['password']+'@'+sql['host']+':'+sql['port']+'/'+sql['db'])
-
-conn = engine.connect()
+engine = dbconn.engine
 metadata = db.MetaData()
 
-Session = sessionmaker(bind=engine)
+Session = engine.session()
 session = Session()
 
 app = FastAPI()
-#dbconn = db.dbconn
-
-# connect_cursor = dbconn('News')
-# develop_cursor = connect_cursor.conn_cursor()
-
 #------------------Class 선언 부분------------------
 class addNews(BaseModel):
     name : Optional[str]
@@ -48,6 +37,7 @@ async def news_list():
     table1 = db.Table('news_link', metadata, autoload=True, autoload_with=engine)
     newslist = session.query(table1).all()
     return newslist
+
 @app.get("/")
 async def main():
     main = "fastapi 메인페이지 입니다."
