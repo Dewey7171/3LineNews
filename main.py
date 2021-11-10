@@ -1,6 +1,7 @@
 from feed_parser import feed
 import sql_auth
 import db
+from itertools import chain
 
 sql = sql_auth.app
 dbconn = db.dbconn
