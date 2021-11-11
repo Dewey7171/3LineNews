@@ -1,17 +1,22 @@
 from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import *
+
 import uvicorn
-import dbconn
-import sqlalchemy as db
 import sql_auth
+
 
 sql = sql_auth.app
 
-engine = dbconn.engine
-metadata = db.MetaData()
+engine = create_engine(
+    sql['name'] + '://' + sql['user']+ ':'+sql['password']+'@'+sql['host']+'/'+sql['db'])
 
-Session = engine.session()
+conn = engine.connect()
+metadata = MetaData()
+
+Session = sessionmaker(bind=engine)
 session = Session()
 
 app = FastAPI()
@@ -28,13 +33,13 @@ class addNews(BaseModel):
 # 뉴스 내용 전체 호출
 @app.get('/news')
 async def newsdata():
-    table = db.Table('newdata', metadata, autoload=True, autoload_with=engine)
-    news = session.query(table).all()
-    return news
+    table = Table('newdata', metadata, autoload=True, autoload_with=engine)
+    newslist = session.query(table).all()
+    return newslist
 
 @app.get('/news/newslist')
 async def news_list():
-    table1 = db.Table('news_link', metadata, autoload=True, autoload_with=engine)
+    table1 = Table('news_link', metadata, autoload=True, autoload_with=engine)
     newslist = session.query(table1).all()
     return newslist
 
@@ -42,7 +47,6 @@ async def news_list():
 async def main():
     main = "fastapi 메인페이지 입니다."
     return main
-
 
 
 # 뉴스 리스트 호출
