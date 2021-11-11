@@ -5,7 +5,7 @@ import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 import sql_auth
 from sqlalchemy.ext.declarative import declarative_base
-import datetime
+
 
 Base = declarative_base()
 sql = sql_auth.app
