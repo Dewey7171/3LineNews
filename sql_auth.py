@@ -34,3 +34,11 @@ elif Env == 'testsqlal':
         'db': 'developer',
         'port': '3306'
     }
+elif Env == 'testpymy':
+    app = {
+        'user' : 'root',
+        'password': '1234',
+        'host': '127.0.0.1',
+        'db': 'developer',
+        'port': '3306'
+    }

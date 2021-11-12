@@ -1,11 +1,9 @@
 import pymysql
 import sql_auth
 
-
 sql = sql_auth.app
 
 class dbconn:
-
     # dbconn을 호출하면 맨 처음 나오는 DB연결 기본 함수
     def __init__(self,dbname:str):
         self.connect = pymysql.Connect(
@@ -13,7 +11,6 @@ class dbconn:
             host=sql['host'],
             user=sql['user'],
             password=sql['password'],
-            charset=sql['charset'],
             port=sql['port']
             )
 
@@ -31,5 +28,3 @@ class dbconn:
     def conn_close(self):
         close = self.connect.close()
         return close
-
-
