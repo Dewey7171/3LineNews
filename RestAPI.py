@@ -3,21 +3,13 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import *
+from dbconn import engineconn
 
 import uvicorn
-import sql_auth
 
-
-sql = sql_auth.app
-
-engine = create_engine(
-    sql['name'] + '://' + sql['user']+ ':'+sql['password']+'@'+sql['host']+'/'+sql['db'])
-
-conn = engine.connect()
 metadata = MetaData()
-
-Session = sessionmaker(bind=engine)
-session = Session()
+engine = engineconn('developer') # address
+session = engine.sessionmaker()
 
 app = FastAPI()
 #------------------Class 선언 부분------------------
@@ -27,19 +19,18 @@ class addNews(BaseModel):
 #------------------Class 선언 부분------------------
 
 
-
 #-------------------Api 실행 부분-------------------
 
 # 뉴스 내용 전체 호출
 @app.get('/news')
 async def newsdata():
-    table = Table('newdata', metadata, autoload=True, autoload_with=engine)
+    table = Table('newdata', metadata, autoload=True, autoload_with=engine.engine)
     newslist = session.query(table).all()
     return newslist
 
 @app.get('/news/newslist')
 async def news_list():
-    table1 = Table('news_link', metadata, autoload=True, autoload_with=engine)
+    table1 = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
     newslist = session.query(table1).all()
     return newslist
 
