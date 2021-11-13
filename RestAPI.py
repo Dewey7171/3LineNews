@@ -1,7 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy import *
 from dbconn import engineconn
 
@@ -11,7 +10,7 @@ metadata = MetaData()
 engine = engineconn('developer') # address
 session = engine.sessionmaker()
 
-app = FastAPI()
+app = FastAPI(version='0.2.0')
 #------------------Class 선언 부분------------------
 class addNews(BaseModel):
     name : Optional[str]

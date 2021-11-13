@@ -1,7 +1,6 @@
 from feed_parser import feed
 import sql_auth
 import db
-from itertools import chain
 
 sql = sql_auth.app
 dbconn = db.dbconn
@@ -25,7 +24,7 @@ News = feed('https://www.inven.co.kr/webzine/news/rss.php')
 news_name = '인벤'
 for data in range(0, len(News)):
 
-    dataUpdates = " INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
+    dataUpdates = "INSERT INTO newdata VALUES(default,%s,%s,%s,%s,%s)"
     NewsData = News[data]
     datasaver = []
     datasaver.append(NewsData['title'])
