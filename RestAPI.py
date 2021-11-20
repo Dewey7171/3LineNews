@@ -7,14 +7,17 @@ from dbconn import engineconn
 import uvicorn
 
 metadata = MetaData()
-engine = engineconn('developer') # address
-session = engine.sessionmaker()
+engine = engineconn('developer')
 
+session = engine.sessionmaker()
 app = FastAPI(version='0.2.0')
+
 #------------------Class 선언 부분------------------
+
 class addNews(BaseModel):
     name : Optional[str]
     link : Optional[str]
+
 #------------------Class 선언 부분------------------
 
 
