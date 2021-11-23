@@ -1,9 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
-from sqlalchemy import create_engine,Column,BigInteger,Integer, VARCHAR, Text,TIMESTAMP
+from sqlalchemy import create_engine,Column,BigInteger, VARCHAR, Text,TIMESTAMP
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
-import sql_auth
+from connection_db import sql_auth
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -21,14 +21,7 @@ session = Session()
 
 app = FastAPI()
 
-class Data(Base):
-    __tablename__ = 'newdata'
-    id = Column(BigInteger,nullable=False, autoincrement=True, primary_key=True)
-    title = Column(VARCHAR(500),nullable=False)
-    content = Column(Text,nullable=False)
-    url =Column(VARCHAR(255),nullable=False)
-    newsname= Column(VARCHAR(50),nullable=False)
-    recordtime= Column(TIMESTAMP,nullable=False)
+
 
 @app.get('/a')
 async def sql():

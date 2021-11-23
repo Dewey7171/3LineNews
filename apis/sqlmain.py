@@ -1,18 +1,17 @@
-from feed_parser import feed
+from add_package.feed_parser import feed
 from sqlalchemy import *
-import sql_auth
-from dbconn import engineconn
+from connection_db import sql_auth
+from connection_db.db_connection import engineconn
 from sqlalchemy.orm import sessionmaker
 
 #------------------Mysql 설정 부분------------------
 sql = sql_auth.app
 
-engine = engineconn('developer')
+engine = engineconn()
 metadata = MetaData()
 connection = engine.connection()
 
-Session = sessionmaker(bind=engine.engine)
-session = Session()
+session = engine.sessionmaker()
 
 table = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
 news_data = Table('newdata', metadata, autoload=True, autoload_with=engine.engine)

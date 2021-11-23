@@ -1,6 +1,5 @@
-from feed_parser import feed
-import sql_auth
-import db
+from add_package.feed_parser import feed
+from connection_db import db, sql_auth
 
 sql = sql_auth.app
 dbconn = db.dbconn
