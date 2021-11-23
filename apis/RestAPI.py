@@ -2,12 +2,12 @@ from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI
 from sqlalchemy import *
-from dbconn import engineconn
+from connection_db.db_connection import engineconn
 
 import uvicorn
 
 metadata = MetaData()
-engine = engineconn('developer')
+engine = engineconn()
 
 session = engine.sessionmaker()
 app = FastAPI(version='0.2.0')
