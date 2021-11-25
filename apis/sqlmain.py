@@ -1,26 +1,20 @@
 from add_package.feed_parser import feed
 from sqlalchemy import *
-from connection_db import sql_auth
-from connection_db.db_connection import engineconn
-from sqlalchemy.orm import sessionmaker
+from connection_db import sql_auth, db_connection, db_class as db
+from fastapi import HTTPException
+
 
 #------------------Mysql 설정 부분------------------
 sql = sql_auth.app
-
-engine = engineconn()
+engine = db_connection.engineconn()
 metadata = MetaData()
 connection = engine.connection()
-
 session = engine.sessionmaker()
 
 table = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
 news_data = Table('newdata', metadata, autoload=True, autoload_with=engine.engine)
 news = session.query(table).all()
 
-dbquery = select([news_data])
-links_list = []
-
-# DB CLASS
 
 #------------------Mysql 설정 부분------------------
 
@@ -30,29 +24,16 @@ for i in news:
     news_name = i['name']
     news_source = feed(news_links)
 
-    for data in range(0, len(news_source)):
-        datasaver = []
-        NewsData = news_source[data]
-        datasaver.extend([NewsData['title'],NewsData['content'],NewsData['url'],news_name,NewsData['date']])
-        session.add(datasaver)
-        session.commit()
+    for data in news_source:
+        add_data = db.Newdata(content=data,name=news_name)
 
         try:
-            session.add(datasaver)
-
+            session.add(add_data)
 
         except:
-            print('URL Duplicate Reload Data')
+            print("데이터 추가 안됨")
             pass
+
 session.commit()
-
-
-
-
-
-# query = db.insert(table)
-# values_list = [{'id': 'dork', 'passwd': '1234'}, {'id': 'test', 'passwd':'test123', 'email':'test@test.com'}]
-# result_proxy = connection.execute(query, values_list)
-# result_proxy.close()
 
 
