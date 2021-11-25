@@ -1,45 +1,38 @@
 from typing import Optional
 from pydantic import BaseModel
-from fastapi import FastAPI
-from sqlalchemy import *
-from connection_db.db_connection import engineconn
+from fastapi import APIRouter
+from sqlalchemy import MetaData,Table,func
+from connection_db import db_connection,db_class
+
 
 import uvicorn
 
+data = db_class.Newdata
 metadata = MetaData()
-engine = engineconn()
-
+engine = db_connection.engineconn()
 session = engine.sessionmaker()
-app = FastAPI(version='0.2.0')
+router = APIRouter()
 
 #------------------Class 선언 부분------------------
 
-class addNews(BaseModel):
-    name : Optional[str]
-    link : Optional[str]
 
 #------------------Class 선언 부분------------------
-
 
 #-------------------Api 실행 부분-------------------
 
 # 뉴스 내용 전체 호출
-@app.get('/news')
+@router.get('/news')
 async def newsdata():
     table = Table('newdata', metadata, autoload=True, autoload_with=engine.engine)
     newslist = session.query(table).all()
+
     return newslist
 
-@app.get('/news/newslist')
+@router.get('/news/newslist')
 async def news_list():
     table1 = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
     newslist = session.query(table1).all()
     return newslist
-
-@app.get("/")
-async def main():
-    main = "fastapi 메인페이지 입니다."
-    return main
 
 
 # 뉴스 리스트 호출
@@ -115,4 +108,4 @@ async def main():
 
 #-------------------Api 실행 부분-------------------
 if __name__ == '__main__':
-    uvicorn.run(app)
+    uvicorn.run(router)
