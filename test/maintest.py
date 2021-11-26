@@ -1,6 +1,6 @@
 from add_package.feed_parser import feed
 from connection_db import sql_auth
-from test import db
+
 
 sql = sql_auth.app
 dbconn = db.dbconn
