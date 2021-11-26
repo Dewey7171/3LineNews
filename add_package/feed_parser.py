@@ -1,11 +1,9 @@
-import json
 from datetime import datetime
-
-
-import feedparser
 from newspaper import Article
 from textrankr import TextRank
 from typing import List
+
+import feedparser
 
 #리스트형식으로 저장하기 위한 클래스 선언
 
@@ -43,8 +41,7 @@ def feed(rss_url : str) :
         NewsTitle = article.title
         NewsFeed = article.text
         NewsUrl = article.url
-        NewsDate = datetime.strftime(article.publish_date,'%Y-%m-%d %H:%M:%S')
-        # NewsDate = datetime.strptime(article.publish_date, '%Y-%m-%d %H:%M:%S')
+        NewsDate = datetime.strftime(article.publish_date,'%Y-%m-%d')
 
         # 뉴스 본문들을 요약하고 k줄 만큼 요약해 str형식으로 저장한다
         summarized: str = textrank.summarize(NewsFeed, k)
@@ -56,6 +53,5 @@ def feed(rss_url : str) :
 
         news_content = news_data.copy()
         news_list.append(news_content)
-
 
     return news_list
