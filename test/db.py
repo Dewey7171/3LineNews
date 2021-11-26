@@ -1,6 +1,5 @@
 import pymysql
 import sql_auth
-
 sql = sql_auth.app
 
 class dbconn:
