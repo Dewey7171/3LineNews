@@ -1,8 +1,6 @@
 from add_package.feed_parser import feed
 from sqlalchemy import *
 from connection_db import sql_auth, db_connection, db_class as db
-from fastapi import HTTPException
-
 
 #------------------Mysql 설정 부분------------------
 sql = sql_auth.app
@@ -25,15 +23,21 @@ for i in news:
     news_source = feed(news_links)
 
     for data in news_source:
-        add_data = db.Newdata(content=data,name=news_name)
-
+        newsurl = data["url"]
+        del data["url"]
+        add_data = db.Newdata(data=data, name=news_name, newsurl=newsurl)
+        session.add(add_data)
         try:
-            session.add(add_data)
-
+            session.commit()
         except:
-            print("데이터 추가 안됨")
+            print('데이터 중복')
+            session.close()
+            session.execute("set @count = 0")
+            session.commit()
+            session.execute("update newdata set id = @count:=@count+1;")
+            session.commit()
             pass
 
-session.commit()
+session.close()
 
 
