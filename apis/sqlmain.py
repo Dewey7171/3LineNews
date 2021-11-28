@@ -10,7 +10,6 @@ connection = engine.connection()
 session = engine.sessionmaker()
 
 table = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
-news_data = Table('newdata', metadata, autoload=True, autoload_with=engine.engine)
 news = session.query(table).all()
 
 
