@@ -24,7 +24,7 @@ for i in news:
     for data in news_source:
         newsurl = data["url"]
         del data["url"]
-        add_data = db.Newdata(data=data, name=news_name, newsurl=newsurl)
+        add_data = db.Newsdata(data=data, name=news_name, newsurl=newsurl)
         session.add(add_data)
         try:
             session.commit()
