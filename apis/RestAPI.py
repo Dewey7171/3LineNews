@@ -17,15 +17,15 @@ class Addnews(BaseModel):
 #-------------------Api 실행 부분-------------------
 
 # 뉴스 내용 전체 호출
-@router.get('/news/all', tags=["main"])
+@router.get('/all', tags=["news"])
 async def newsdata():
-    table = Table('newdata', metadata, autoload=True, autoload_with=engine.engine)
+    table = Table('news_data', metadata, autoload=True, autoload_with=engine.engine)
     newdata = session.query(table).all()
     session.close()
     return newdata
 
 # 뉴스 사이트 전체 호출
-@router.get('/newslist', tags=["main"])
+@router.get('/newslist', tags=["news"])
 async def news_list():
     table1 = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
     newslist = session.query(table1).all()
@@ -33,7 +33,7 @@ async def news_list():
     return newslist
 
 # 뉴스 사이트 추가
-@router.post('/newslist', tags=["main"])
+@router.post('/newslist', tags=["news"])
 async def news_list(add : Addnews):
     addMemo = Newslink(name=add.name,link=add.link)
     session.add(addMemo)
@@ -49,7 +49,7 @@ async def news_list(add : Addnews):
     return result
 
 # 뉴스 사이트 별 조회
-@router.get('/news/site/{news}', tags=["main"])
+@router.get('/site/{news}', tags=["news"])
 async def news_name(news : str):
     result = session.query(Newdata).filter(Newdata.name == news).all()
 
@@ -61,8 +61,8 @@ async def news_name(news : str):
     return result
 
 # 뉴스 날짜별 조회
-@router.get('/news/date/{date}', tags=["main"])
-async def qwe(date : str):
+@router.get('/date/{date}', tags=["news"])
+async def date(date : str):
     result = session.query(Newdata).filter(Newdata.data.comparator['date'] == date).all()
 
     if result == []:

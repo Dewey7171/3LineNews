@@ -9,7 +9,9 @@ Fastapi를 이용해 뉴스를 3줄 요약해 json형태의 데이터로 출력�
 
 
 3. DB에 저장된 데이터를 유저들이 호출한다.
-=======
+
+</br></br>
+
 # ✋뉴스 3줄 요약 API
 
 📰뉴스 기사를 3줄로 요약해서 유저들에게 제공하는 RESTAPI 서비스
@@ -35,29 +37,97 @@ Fastapi를 이용해 뉴스를 3줄 요약해 json형태의 데이터로 출력�
 <img src="https://img.shields.io/badge/Python-3766AB?style=for-the-badge&logo=Python&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=white">
 
 
-  
-</br>
-</br>
-</br>
+</br></br></br>
 
 # 사용방법 
 기본 IP = 13.209.99.213</br>
 기본 PORT = 22555
-</br>
-</br>
-### GET 13.209.99.213/newslist
+</br></br>
+
+### GET 13.209.99.213:22555/news/all
+  👉DB에 저장된 뉴스 내용 전체 호출</br>
+      __ex: 13.209.99.213:22555/news/all  -> 저장된 전체 데이터 호출__
+  </br>
+  </br>
+### GET 13.209.99.213:22555/news/newslist
   👉DB에 저장된 News_link Table 호출</br>
-      __ex: 13.209.99.213:22555/newslist  -> 해당 테이블 속 전체 데이터 호출__
+      __ex: 13.209.99.213:22555/newslist  -> 뉴스 리스트 호출__
   </br>
   </br>
-### GET 13.209.99.213/news/{newsname}
+### GET 13.209.99.213:22555/news/site/{newsname}
   👉newdata Table에 존재하는 newsname인 데이터를 호출</br>
       __ex: 13.209.99.213:22555/news/inven  -> inven이라는 이름을 가진 뉴스 데이터 호출__
   </br>
   </br>
-### GET 13.209.99.213/date/{date}
+### GET 13.209.99.213:22555/news/date/{date}
   👉newdata Table에 존재하는 date 해당 날짜의 기사 데이터를 호출 </br>
       __ex: 13.209.99.213:22555/date/2021-09-30  -> 2021년 9월 30일 날짜의 뉴스 데이터를 호출__
+</br></br></br>
+
+# DB 스키마
+
+### news_link
+~~~
+create table news_link
+(
+	id int auto_increment comment
+		primary key,
+    
+	name varchar(50) not null,
+  
+	link varchar(500) not null comment ,
+  
+	constraint news_link_link_uindex
+		unique (link),
+    
+	constraint news_link_name_uindex
+		unique (name)
+);
 
 
-### DB 정보와 같은 보안에 관련된 사항은 언제나 ignore 해 놓기 
+id = 저장되는 뉴스 링크를 구별할 수 있는 id
+name = 뉴스 이름을 나타내는 column, unique로 고유한 이름을 가지도록 만듬, 중복 x
+link = 뉴스 링크를 나타내는 column, unique로 고유한 링크를 가지도록 만듬, 중복 x
+
+~~~
+</br></br>
+### news_data
+
+~~~
+create table news_data
+(
+	id bigint auto_increment
+		primary key,
+    
+	data json not null,
+  
+	name varchar(30) not null,
+  
+	newsurl varchar(500) not null,
+  
+	constraint newdata_newsurl_uindex
+		unique (newsurl)
+);
+
+id = 저장되는 데이터를 구별할 수 있는 id
+data = 뉴스 데이터를 JSON형식으로 저장하는 column, date,title,content로 구성되어있음
+name = 어떤 뉴스인지 구별하기 위한 column
+newsurl = url을 저장하는 column, 데이터 중복을 막기위한 조치로 고유한 데이터인 url을 unique시켜 중복을 막음
+
+~~~
+
+# 폴더 설명 
+### add_package
+  - DB에 데이터를 추가하거나 데이터를 가공하는 파일을 모아두는 폴더
+</br></br>
+### api_router
+  - 여러 파일로 쪼개져 있는 API를 Router를 이용해 연결 시켜주는 폴더
+</br></br>
+### apis
+  - 실제 작동하는 API들을 모아두는 폴더
+</br></br>
+### connection_db
+  - DB에 직접적으로 연결하는 파일을 모아두는 폴더
+</br></br>
+### test
+   - 기존에 사용하던 레거시 코드 or 테스트 하는 파일을 모아두는 폴더
