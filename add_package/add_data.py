@@ -1,4 +1,4 @@
-from add_package.feed_parser import feed
+from feed_parser import feed
 from sqlalchemy import *
 from connection_db import sql_auth, db_connection, db_class as db
 
@@ -30,13 +30,13 @@ for i in news:
             session.commit()
         except:
             print('데이터 중복')
-            session.close()
-            session.execute("set @count = 0")
-            session.commit()
-            session.execute("update newdata set id = @count:=@count+1;")
-            session.commit()
             pass
 
+session.close()
+session.execute("set @count = 0")
+session.commit()
+session.execute("update newdata set id = @count:=@count+1;")
+session.commit()
 session.close()
 
 

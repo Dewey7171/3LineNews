@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 
 def include_router(app):
-    app.include_router(RestAPI.router, prefix="/main")
+    app.include_router(RestAPI.router, prefix="/news")
 
 
 def start_application():

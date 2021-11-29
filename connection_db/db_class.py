@@ -3,8 +3,8 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
-class Newdata(Base):
-    __tablename__ = 'newdata'
+class Newsdata(Base):
+    __tablename__ = 'news_data'
     id = Column(BigInteger,nullable=False, autoincrement=True, primary_key=True)
     data = Column(JSON, nullable=False)
     name = Column(VARCHAR(30), nullable=False)
