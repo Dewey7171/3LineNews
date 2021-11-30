@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from sqlalchemy import MetaData, Table
 from connection_db import db_connection,db_class
 
-Newdata = db_class.Newdata
+Newdata = db_class.Newsdata
 Newslink = db_class.Newslink
 metadata = MetaData()
 engine = db_connection.engineconn()
@@ -69,5 +69,6 @@ async def date(date : str):
         result = HTTPException(status_code=404, detail="해당 날짜에 존재하는 데이터가 없거나 날짜 형식을 20XX-XX-XX로 변경하세요")
     else:
         session.close()
+
     return result
 
