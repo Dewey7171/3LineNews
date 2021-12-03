@@ -19,18 +19,36 @@ class Addnews(BaseModel):
 # 뉴스 내용 전체 호출
 @router.get('/all', tags=["news"])
 async def newsdata():
-    table = Table('news_data', metadata, autoload=True, autoload_with=engine.engine)
-    newdata = session.query(table).all()
-    session.close()
-    return newdata
+    try:
+        table1 = Table('news_data', metadata, autoload=True, autoload_with=engine.engine)
+
+    except:
+        result = HTTPException(status_code=404, detail="해당 테이블이 존재하지 않습니다.")
+
+    else:
+        result = session.query(table1).all()
+
+    finally:
+        session.close()
+
+    return result
 
 # 뉴스 사이트 전체 호출
 @router.get('/newslist', tags=["news"])
 async def news_list():
-    table1 = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
-    newslist = session.query(table1).all()
-    session.close()
-    return newslist
+    try:
+        table1 = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
+
+    except:
+        result = HTTPException(status_code=404, detail="해당 테이블이 존재하지 않습니다.")
+
+    else:
+        result = session.query(table1).all()
+
+    finally:
+        session.close()
+
+    return result
 
 # 뉴스 사이트 추가
 @router.post('/newslist', tags=["news"])
@@ -55,6 +73,7 @@ async def news_name(news : str):
 
     if result == []:
         result = HTTPException(status_code=404, detail="제공되는 뉴스가 존재하지 않습니다.")
+
     else:
         session.close()
 
@@ -67,8 +86,8 @@ async def date(date : str):
 
     if result == []:
         result = HTTPException(status_code=404, detail="해당 날짜에 존재하는 데이터가 없거나 날짜 형식을 20XX-XX-XX로 변경하세요")
+
     else:
         session.close()
 
     return result
-
