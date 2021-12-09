@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from sqlalchemy import MetaData, Table
 from connection_db import db_connection,db_class
 
@@ -23,7 +24,7 @@ async def newsdata():
         table1 = Table('news_data', metadata, autoload=True, autoload_with=engine.engine)
 
     except:
-        result = HTTPException(status_code=404, detail="해당 테이블이 존재하지 않습니다.")
+        result = JSONResponse(status_code=404, content="해당 테이블이 존재하지 않습니다.")
 
     else:
         result = session.query(table1).all()
@@ -40,7 +41,7 @@ async def news_list():
         table1 = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
 
     except:
-        result = HTTPException(status_code=404, detail="해당 테이블이 존재하지 않습니다.")
+        result = JSONResponse(status_code=404, content="해당 테이블이 존재하지 않습니다.")
 
     else:
         result = session.query(table1).all()
@@ -59,10 +60,10 @@ async def news_list(add : Addnews):
     try:
         session.commit()
         session.close()
-        result = HTTPException(status_code=200, detail="Add Complete")
+        result = JSONResponse(status_code=200, content="Add Complete")
 
     except:
-        result = HTTPException(status_code=404, detail="Add Failed")
+        result = JSONResponse(status_code=404, content="Add Failed")
 
     return result
 
@@ -72,7 +73,7 @@ async def news_name(news : str):
     result = session.query(Newdata).filter(Newdata.name == news).all()
 
     if result == []:
-        result = HTTPException(status_code=404, detail="제공되는 뉴스가 존재하지 않습니다.")
+        result = JSONResponse(status_code=404, content="제공되는 뉴스가 존재하지 않습니다.")
 
     else:
         session.close()
@@ -85,7 +86,7 @@ async def date(date : str):
     result = session.query(Newdata).filter(Newdata.data.comparator['date'] == date).all()
 
     if result == []:
-        result = HTTPException(status_code=404, detail="해당 날짜에 존재하는 데이터가 없거나 날짜 형식을 20XX-XX-XX로 변경하세요")
+        result = JSONResponse(status_code=404, content="해당 날짜에 존재하는 데이터가 없거나 날짜 형식을 20XX-XX-XX로 변경하세요")
 
     else:
         session.close()

@@ -40,28 +40,28 @@ Fastapi를 이용해 뉴스를 3줄 요약해 json형태의 데이터로 출력�
 </br></br></br>
 
 # 사용방법 
-기본 IP = 13.209.99.213</br>
-기본 PORT = 22555
+기본 IP = 0.0.0.0</br>
+기본 PORT = 0000
 </br></br>
 
-### GET 13.209.99.213:22555/news/all
+### GET 0.0.0.0:0000/news/all
   👉DB에 저장된 뉴스 내용 전체 호출</br>
-      __ex: 13.209.99.213:22555/news/all  -> 저장된 전체 데이터 호출__
+      __ex: 0.0.0.0:0000/news/all  -> 저장된 전체 데이터 호출__
   </br>
   </br>
-### GET 13.209.99.213:22555/news/newslist
+### GET 0.0.0.0:0000/news/newslist
   👉DB에 저장된 News_link Table 호출</br>
-      __ex: 13.209.99.213:22555/newslist  -> 뉴스 리스트 호출__
+      __ex: 0.0.0.0:0000/newslist  -> 뉴스 리스트 호출__
   </br>
   </br>
-### GET 13.209.99.213:22555/news/site/{newsname}
+### GET 0.0.0.0:0000/news/site/{newsname}
   👉newdata Table에 존재하는 newsname인 데이터를 호출</br>
-      __ex: 13.209.99.213:22555/news/inven  -> inven이라는 이름을 가진 뉴스 데이터 호출__
+      __ex: 0.0.0.0:0000/news/inven  -> inven이라는 이름을 가진 뉴스 데이터 호출__
   </br>
   </br>
-### GET 13.209.99.213:22555/news/date/{date}
+### GET 0.0.0.0:0000/news/date/{date}
   👉newdata Table에 존재하는 date 해당 날짜의 기사 데이터를 호출 </br>
-      __ex: 13.209.99.213:22555/date/2021-09-30  -> 2021년 9월 30일 날짜의 뉴스 데이터를 호출__
+      __ex: 0.0.0.0:0000/date/2021-09-30  -> 2021년 9월 30일 날짜의 뉴스 데이터를 호출__
 </br></br></br>
 
 # DB 스키마
