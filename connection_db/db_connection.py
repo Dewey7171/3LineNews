@@ -1,11 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from connection_db import sql_auth
 
 sql = sql_auth.app
-
-Base = declarative_base()
-
 
 class engineconn:
 
@@ -20,6 +17,3 @@ class engineconn:
     def connection(self):
         conn = self.engine.connect()
         return conn
-
-
-
