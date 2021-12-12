@@ -1,12 +1,10 @@
 from feed_parser import feed
 from sqlalchemy import *
-from connection_db import sql_auth, db_connection, db_class as db
+from connection_db import db_connection, db_class as db
 
 #------------------Mysql 설정 부분------------------
-sql = sql_auth.app
 engine = db_connection.engineconn()
 metadata = MetaData()
-connection = engine.connection()
 session = engine.sessionmaker()
 
 table = Table('news_link', metadata, autoload=True, autoload_with=engine.engine)
