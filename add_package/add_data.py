@@ -13,7 +13,6 @@ news = session.query(table).all()
 
 #------------------Mysql 설정 부분------------------
 
-# 데이터 넣는 부분을 최적화 시키는 코드를 고민해서 작성해보기
 for i in news:
     news_links = i['link']
     news_name = i['name']
