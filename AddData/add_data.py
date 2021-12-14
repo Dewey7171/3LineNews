@@ -1,6 +1,6 @@
 from feed_parser import feed
 from sqlalchemy import *
-from connection_db import db_connection, db_class as db
+from Model import db_connection, db_class as db
 
 #------------------Mysql 설정 부분------------------
 engine = db_connection.engineconn()
@@ -30,6 +30,8 @@ for i in news:
             pass
 
 session.close()
+
+# 이 부분도 if로 가르면 안되나?
 session.execute("set @count = 0")
 session.commit()
 session.execute("update newdata set id = @count:=@count+1;")
