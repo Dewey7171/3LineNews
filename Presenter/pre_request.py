@@ -91,3 +91,24 @@ def pre_get_date(date):
         session.close()
 
     return result
+
+def pre_del_all():
+
+    try:
+        result = db_query.db_newsdata_del_all()
+        session.commit()
+
+    except:
+        result = JSONResponse(status_code=400, content="URL ERROR")
+
+    else:
+        if result == 0:
+            result = JSONResponse(status_code=404, content="Data Not Found")
+
+        else:
+            result = JSONResponse(status_code=200, content="200 OK")
+
+    finally:
+        session.close()
+
+    return result

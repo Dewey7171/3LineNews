@@ -41,3 +41,8 @@ def db_newsdata_get_date(date):
 
     return result
 
+def db_newsdata_del_all():
+    result = session.query(newsdata).delete()
+
+    return result
+
