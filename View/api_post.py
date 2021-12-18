@@ -9,7 +9,7 @@ class Addnews(BaseModel):
     link: str
 
 @router.post('/newslist', tags=["news"])
-async def news_list(add : Addnews):
+async def news_list_post_add(add : Addnews):
     result = pre_request.pre_post_list(add)
 
     return result
