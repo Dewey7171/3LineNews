@@ -112,3 +112,20 @@ def pre_del_all():
         session.close()
 
     return result
+
+def pre_patch_list(patchlist,id):
+
+    try:
+        db_query.db_newslist_patch(patchlist,id)
+        commit()
+
+    except:
+        result = JSONResponse(status_code=400, content="URL ERROR")
+
+    else:
+        result = JSONResponse(status_code=200, content="OK")
+
+    finally:
+        session.close()
+
+    return result
