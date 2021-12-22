@@ -115,19 +115,3 @@ name = 어떤 뉴스인지 구별하기 위한 column
 newsurl = url을 저장하는 column, 데이터 중복을 막기위한 조치로 고유한 데이터인 url을 unique시켜 중복을 막음
 
 ~~~
-
-# 폴더 설명 
-### add_package
-  - DB에 데이터를 추가하거나 데이터를 가공하는 파일을 모아두는 폴더
-</br></br>
-### api_router
-  - 여러 파일로 쪼개져 있는 API를 Router를 이용해 연결 시켜주는 폴더
-</br></br>
-### apis
-  - 실제 작동하는 API들을 모아두는 폴더
-</br></br>
-### connection_db
-  - DB에 직접적으로 연결하는 파일을 모아두는 폴더
-</br></br>
-### test
-   - 기존에 사용하던 레거시 코드 or 테스트 하는 파일을 모아두는 폴더
