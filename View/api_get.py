@@ -23,7 +23,6 @@ async def news_name_get(news : str):
     result = pre_request.pre_get_newsdata(news)
 
     return result
-
 # 뉴스 날짜별 조회
 @router.get('/date/{date}', tags=["news"])
 async def news_date_get(date : str):
