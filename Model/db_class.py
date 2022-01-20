@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger, VARCHAR, JSON, TEXT,Computed
+from sqlalchemy import Column, BigInteger, VARCHAR, JSON, TEXT
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
