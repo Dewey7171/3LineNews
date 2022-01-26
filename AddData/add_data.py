@@ -32,20 +32,13 @@ for i in news:
 session.close()
 
 # 이 부분도 if로 가르면 안되나?
-<<<<<<< HEAD:Presenter/pre_add_data.py
 # 해당하는 부분은 성능에 치명적일 수 있으니 이 부분을 생각해서 어떻게 처리를 하면 좋을지 생각해보자.
 # id를 보여주지 말까 그냥?
-# session.execute("set @count = 0")
-# session.commit()
-# session.execute("update newdata set id = @count:=@count+1;")
-# session.commit()
-# session.close()
-=======
+
 session.execute("set @count = 0")
 session.commit()
 session.execute("update newdata set id = @count:=@count+1;")
 session.commit()
 session.close()
->>>>>>> parent of 3a8506a ( Refactor : 파일 변경 및 Redis 테스트 코드 작성):AddData/add_data.py
 
 
