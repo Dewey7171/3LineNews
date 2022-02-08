@@ -17,3 +17,6 @@ rd.set(date_time,jsonDataDict)
 
 
 
+# 레디스를 쓰는 이유가 뭔지 생각해보기
+#
+
