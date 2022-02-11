@@ -57,3 +57,9 @@ def db_newslist_patch(patchlist, id):
 
     return result
 
+def db_subscribe_email(email):
+    # add = userdata(email=email)
+    result = session.add()
+
+    return result
+

@@ -129,3 +129,20 @@ def pre_patch_list(patchlist,id):
         session.close()
 
     return result
+
+def pre_post_subscribe(email):
+
+    try:
+        db_query.db_subscribe_email()
+        commit()
+
+    except:
+        result = JSONResponse(status_code=400, content="URL ERROR")
+
+    else:
+        result = JSONResponse(status_code=200, content="OK")
+
+    finally:
+        session.close()
+
+    return result
