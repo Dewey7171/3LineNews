@@ -15,3 +15,9 @@ class Newslink(Base):
     id = Column(BigInteger, nullable=False, autoincrement=True, primary_key=True)
     name = Column(VARCHAR(50), nullable=False)
     link = Column(TEXT, nullable=False)
+
+class Subcribe(Base):
+    __tablename__ = 'subscribe_data'
+    id = Column(BigInteger, nullable=False, autoincrement=True, primary_key=True)
+    name = Column(VARCHAR(60), nullable=False)
+    email = Column(VARCHAR(255), nullable=False, unique=True)
