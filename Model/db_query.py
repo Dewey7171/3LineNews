@@ -5,6 +5,7 @@ engine = db_connection.engineconn()
 session = engine.sessionmaker()
 newsdata = db_class.Newsdata
 newslink = db_class.Newslink
+subscribe = db_class.Subcribe
 
 # COMMIT
 def db_commit():
@@ -57,9 +58,10 @@ def db_newslist_patch(patchlist, id):
 
     return result
 
-def db_subscribe_email(email):
-    # add = userdata(email=email)
-    result = session.add()
+# Subscribe ADD
+def db_subscribe_email(data):
+    add = subscribe(name= data.name,email=data.email)
+    result = session.add(add)
 
     return result
 

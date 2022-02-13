@@ -1,3 +1,5 @@
+import random
+
 from Model import db_connection
 from Model import db_query
 from fastapi.responses import JSONResponse
@@ -130,10 +132,11 @@ def pre_patch_list(patchlist,id):
 
     return result
 
-def pre_post_subscribe(email):
+def pre_post_subscribe(data):
 
     try:
-        db_query.db_subscribe_email()
+
+        db_query.db_subscribe_email(data)
         commit()
 
     except:

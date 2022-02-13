@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger, VARCHAR, JSON, TEXT
+from sqlalchemy import Column, BigInteger, VARCHAR, JSON, TEXT,INT,BOOLEAN
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -21,3 +21,5 @@ class Subcribe(Base):
     id = Column(BigInteger, nullable=False, autoincrement=True, primary_key=True)
     name = Column(VARCHAR(60), nullable=False)
     email = Column(VARCHAR(255), nullable=False, unique=True)
+    active = Column(BOOLEAN,default=0)
+    keys = Column(INT, nullable=False)
