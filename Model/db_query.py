@@ -65,3 +65,9 @@ def db_subscribe_email(data):
 
     return result
 
+# Confirm
+def db_Confirm():
+    add = subscribe()
+    result = session.add(add)
+
+    return result

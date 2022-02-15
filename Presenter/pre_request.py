@@ -149,3 +149,21 @@ def pre_post_subscribe(data):
         session.close()
 
     return result
+
+def pre_post_confirm(data):
+
+    try:
+
+        db_query.db_Confirm()
+        commit()
+
+    except:
+        result = JSONResponse(status_code=400, content="URL ERROR")
+
+    else:
+        result = JSONResponse(status_code=200, content="OK")
+
+    finally:
+        session.close()
+
+    return result

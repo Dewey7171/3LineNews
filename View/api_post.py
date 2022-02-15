@@ -26,6 +26,6 @@ async def subscribe_data(data : EmailData):
 
 @router.post('/confirm', tags=["subscribe"])
 async def subscribe_confirm():
-    result = pre_request.pre_post_subscribe()
+    result = pre_request.pre_post_confirm()
 
     return result
