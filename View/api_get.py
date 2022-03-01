@@ -29,3 +29,10 @@ async def news_date_get(date : str):
     result = pre_request.pre_get_date(date)
 
     return result
+
+# 일단 get으로 호출 시 메세지를 보낸다
+@router.get('/msg', tags=["news"])
+async def news_date_get():
+    result = pre_request.pre_slack_msg()
+
+    return result

@@ -1,13 +1,12 @@
-import random
-
 from Model import db_connection
 from Model import db_query
+from AddData import slack_msg
 from fastapi.responses import JSONResponse
 
 engine = db_connection.engineconn()
 session = engine.sessionmaker()
 commit = db_query.db_commit
-close  = db_query.db_close
+close = db_query.db_close
 
 def pre_get_all():
 
@@ -135,7 +134,6 @@ def pre_patch_list(patchlist,id):
 def pre_post_subscribe(data):
 
     try:
-
         db_query.db_subscribe_email(data)
         commit()
 
@@ -153,9 +151,24 @@ def pre_post_subscribe(data):
 def pre_post_confirm(data):
 
     try:
-
         db_query.db_Confirm()
         commit()
+
+    except:
+        result = JSONResponse(status_code=400, content="URL ERROR")
+
+    else:
+        result = JSONResponse(status_code=200, content="OK")
+
+    finally:
+        session.close()
+
+    return result
+
+def pre_slack_msg():
+
+    try:
+        slack_msg.slack_push('asasfasfd')
 
     except:
         result = JSONResponse(status_code=400, content="URL ERROR")

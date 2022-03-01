@@ -3,7 +3,6 @@ import smtplib
 from email.mime.text import MIMEText
 from Presenter import pre_auth
 
-
 def send_email(data):
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.ehlo()
@@ -20,10 +19,4 @@ def send_email(data):
     # 세션 종료
     s.quit()
 
-
     return
-
-
-
-
-
