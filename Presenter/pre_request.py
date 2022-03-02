@@ -168,15 +168,12 @@ def pre_post_confirm(data):
 def pre_slack_msg():
 
     try:
-        slack_msg.slack_push('asasfasfd')
+        slack_msg.slack_push()
 
     except:
         result = JSONResponse(status_code=400, content="URL ERROR")
 
     else:
         result = JSONResponse(status_code=200, content="OK")
-
-    finally:
-        session.close()
 
     return result
